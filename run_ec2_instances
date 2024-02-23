@@ -1,0 +1,35 @@
+import boto3
+
+# Specify the region in which you want to create the instance
+region = 'ap-south-1a'
+
+# Specify the AMI ID for the instance
+ami_id = 'ami-0449c34f967dbf18a'
+
+# Specify the instance type
+instance_type = 't2.micro'
+
+# Specify the key pair name for SSH access
+key_name = 'awslinux'
+
+# Specify the security group ID for the instance
+security_group_id = 'sg-02a8999b09d9ea284'
+
+# Initialize a client for EC2 service
+ec2 = boto3.client('ec2', region_name=region)
+
+# Create a new EC2 instance
+response = ec2.run_instances(
+    ImageId=ami_id,
+    InstanceType=instance_type,
+    MinCount=1,
+    MaxCount=1,
+    KeyName=key_name,
+    SecurityGroupIds=[security_group_id]
+)
+
+# Get the instance ID of the newly created instance
+instance_id = response['Instances'][0]['InstanceId']
+
+print(f'Instance with ID {instance_id} created successfully.')
+
